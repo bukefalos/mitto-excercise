@@ -26,6 +26,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="SMSServices.cs" />
+    <Compile Include="CountryServices.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
