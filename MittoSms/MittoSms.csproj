@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="ServiceStack" Version="5.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../MittoSms.ServiceInterface/MittoSms.ServiceInterface.csproj" />
+    <ProjectReference Include="../MittoSms.ServiceModel/MittoSms.ServiceModel.csproj" />
+  </ItemGroup>
+</Project>

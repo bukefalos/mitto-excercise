@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MittoSms", "MittoSms\MittoSms.csproj", "{C2AB525D-0B17-4E9A-B51E-C56B221206F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MittoSms.ServiceModel", "MittoSms.ServiceModel\MittoSms.ServiceModel.csproj", "{1CFF46E6-A080-4006-86D2-EBA17A90FF5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MittoSms.ServiceInterface", "MittoSms.ServiceInterface\MittoSms.ServiceInterface.csproj", "{8A2FC597-68CD-4A07-BCE4-71F886E7CB58}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2AB525D-0B17-4E9A-B51E-C56B221206F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2AB525D-0B17-4E9A-B51E-C56B221206F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2AB525D-0B17-4E9A-B51E-C56B221206F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2AB525D-0B17-4E9A-B51E-C56B221206F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CFF46E6-A080-4006-86D2-EBA17A90FF5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CFF46E6-A080-4006-86D2-EBA17A90FF5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CFF46E6-A080-4006-86D2-EBA17A90FF5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CFF46E6-A080-4006-86D2-EBA17A90FF5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A2FC597-68CD-4A07-BCE4-71F886E7CB58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A2FC597-68CD-4A07-BCE4-71F886E7CB58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A2FC597-68CD-4A07-BCE4-71F886E7CB58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A2FC597-68CD-4A07-BCE4-71F886E7CB58}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
