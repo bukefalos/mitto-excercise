@@ -7,6 +7,9 @@ using Funq;
 using ServiceStack;
 using ServiceStack.Configuration;
 using MittoSms.ServiceInterface;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
+using ServiceStack.Validation;
 
 namespace MittoSms
 {
@@ -45,6 +48,8 @@ namespace MittoSms
                 DefaultRedirectPath = "/metadata",
                 DebugMode = AppSettings.Get(nameof(HostConfig.DebugMode), false)
             });
+
+            container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory("server=localhost;database=mitto;uid=mitto;pwd=mitto;", MySqlDialect.Provider));
         }
     }
 }

@@ -21,6 +21,7 @@
   <ItemGroup>
     <Compile Include="SendSMS.cs" />
     <Compile Include="Types\SendSMSResponseState.cs" />
+    <Compile Include="Types\Sms.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

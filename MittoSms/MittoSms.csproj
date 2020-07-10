@@ -7,10 +7,14 @@
 
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.9.0" />
+    <PackageReference Include="ServiceStack.OrmLite.MySql" Version="5.9.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="../MittoSms.ServiceInterface/MittoSms.ServiceInterface.csproj" />
     <ProjectReference Include="../MittoSms.ServiceModel/MittoSms.ServiceModel.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ServiceStack, Version=5.0.0.0, Culture=neutral, PublicKeyToken=02c12cbda47e6587" />
   </ItemGroup>
 </Project>
