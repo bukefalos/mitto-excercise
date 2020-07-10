@@ -10,6 +10,8 @@ using MittoSms.ServiceInterface;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.Validation;
+using ServiceStack.Text;
+using System;
 
 namespace MittoSms
 {
@@ -48,6 +50,21 @@ namespace MittoSms
                 DefaultRedirectPath = "/metadata",
                 DebugMode = AppSettings.Get(nameof(HostConfig.DebugMode), false)
             });
+
+            // global DateTime JSON configuration
+            JsConfig<DateTime>.SerializeFn = time => new DateTime(time.Ticks, DateTimeKind.Local)
+                .ToUniversalTime()
+                .ToString("yyyy-MM-ddTHH:mm:ss");
+
+            JsConfig<DateTime?>.SerializeFn =
+                time => time != null
+                    ? new DateTime(time.Value.Ticks, DateTimeKind.Local)
+                        .ToUniversalTime()
+                        .ToString("yyyy-MM-ddTHH:mm:ss")
+                    : null;
+
+            JsConfig.DateHandler = DateHandler.ISO8601;
+
 
             container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory("server=localhost;database=mitto;uid=mitto;pwd=mitto;", MySqlDialect.Provider));
         }
