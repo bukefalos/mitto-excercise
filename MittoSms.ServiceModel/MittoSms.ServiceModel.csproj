@@ -19,7 +19,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="SendSMS.cs" />
+    <Compile Include="SMSes.cs" />
     <Compile Include="Types\SendSMSResponseState.cs" />
     <Compile Include="Types\Sms.cs" />
     <Compile Include="Types\Country.cs" />
