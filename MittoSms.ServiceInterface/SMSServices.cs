@@ -18,7 +18,7 @@ namespace MittoSms.ServiceInterface
         }
     }
 
-    public class SMSServices: Service
+    public class SMSServices : Service
     {
         public SendSMSResponse Get(SendSMS request)
         {
@@ -33,12 +33,27 @@ namespace MittoSms.ServiceInterface
 
 
             var sms = request.ConvertTo<Sms>();
-            sms.Created =  DateTime.Now;
+            sms.Created = DateTime.Now;
 
             Db.Save(sms);
             return new SendSMSResponse
             {
                 State = SendSMSResponseState.Success
+            };
+        }
+
+        public GetSentSMSResponse Get(GetSentSMS request)
+        {
+            var totalSmsRecords = Db.Count<Sms>();
+            var smsRecords = Db.Select(Db.From<Sms>()
+                .Skip(request.Skip)
+                .Limit(request.Take)
+            );
+
+            return new GetSentSMSResponse()
+            {
+                Items = smsRecords,
+                TotalCount = totalSmsRecords
             };
         }
     }
