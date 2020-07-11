@@ -65,8 +65,10 @@ namespace MittoSms
 
             JsConfig.DateHandler = DateHandler.ISO8601;
 
-
+            Plugins.Add(new ValidationFeature());
+            container.RegisterValidators(typeof(SMSServices).Assembly);
             container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory("server=localhost;database=mitto;uid=mitto;pwd=mitto;", MySqlDialect.Provider));
+            //TODO: init DB if tables do not exist
         }
     }
 }
