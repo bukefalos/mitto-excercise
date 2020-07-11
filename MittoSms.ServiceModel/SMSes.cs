@@ -9,13 +9,13 @@ namespace MittoSms.ServiceModel
     public class SendSMS: IReturn<SendSMSResponse>
     {
         public String From { get; set; }
-        public string To { get; set; }
-        public string Text { get; set; }
+        public String To { get; set; }
+        public String Text { get; set; }
     }
 
     public class SendSMSResponse
     {
-        public SendSMSResponseState State { get; set; }
+        public SentSMSState? State { get; set; }
         public ResponseStatus ResponseStatus { get; set; }
     }
 

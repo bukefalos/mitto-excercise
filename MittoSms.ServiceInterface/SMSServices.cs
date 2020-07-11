@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using MittoSms.ServiceModel;
 using MittoSms.ServiceModel.Types;
 using ServiceStack;
@@ -23,34 +25,47 @@ namespace MittoSms.ServiceInterface
     {
         public SendSMSResponse Get(SendSMS request)
         {
-            if (request.From.IsNullOrEmpty())
-                throw new ArgumentException("'From' argument is required");
-
-            if (request.To.IsNullOrEmpty())
-                throw new ArgumentException("'To' argument is required");
-
-            if (request.Text.IsNullOrEmpty())
-                throw new ArgumentException("'Text' argument is required");
-
-
+            //TODO: select country which receiver belongs to (maybe move to ServiceLogic)
+            var receiverCountry = FindCountry(
+                Db.Select<Country>(),
+                request.To.ReplaceAll("+", ""));
+                        
             var sms = request.ConvertTo<Sms>();
-            sms.Created = DateTime.Now.ToUniversalTime();
+            sms.CreatedAt = DateTime.Now.ToUniversalTime();
+            sms.State = SentSMSState.Success;
+            sms.Price = receiverCountry.PricePerSMS;
+            sms.CountryId = receiverCountry.Id;
 
             Db.Save(sms);
             return new SendSMSResponse
             {
-                State = SendSMSResponseState.Success
+                State = sms.State
             };
         }
 
-        public GetSentSMSResponse Get(GetSentSMS request)
+        private Country FindCountry(List<Country> countries, String receiver)
         {
+            for (int callingCodeLength = 4; callingCodeLength > 0; callingCodeLength--)
+            {
+                var potentialCallingCode = receiver.Substring(0, callingCodeLength);
+                var foundCountry = countries.Find(country => country.Cc.Equals(potentialCallingCode));
+                if (foundCountry != null)
+                {
+                    return foundCountry;
+                }
+            }
+            throw new ArgumentException("Unsupported receiver calling code");
+        }
+
+        public async Task<GetSentSMSResponse> Get(GetSentSMS request)
+        {
+            //TODO: request validation
             var from = Convert.ToDateTime(request.DateTimeFrom);
             var to = Convert.ToDateTime(request.DateTimeTo);
-            Expression<Func<Sms, bool>> dateTimeCondition = sms => from <= sms.Created && sms.Created >= to;
+            Expression<Func<Sms, bool>> dateTimeCondition = sms => from <= sms.CreatedAt && sms.CreatedAt >= to;
 
-            var totalSmsRecords = Db.Count<Sms>(dateTimeCondition);
-            var smsRecords = Db.Select(Db.From<Sms>()
+            var totalSmsRecords = await Db.CountAsync<Sms>(dateTimeCondition);
+            var smsRecords = await Db.SelectAsync(Db.From<Sms>()
                 .Where(dateTimeCondition)
                 .Skip(request.Skip)
                 .Limit(request.Take)

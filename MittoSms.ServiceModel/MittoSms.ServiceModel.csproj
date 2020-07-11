@@ -20,10 +20,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="SMSes.cs" />
-    <Compile Include="Types\SendSMSResponseState.cs" />
+    <Compile Include="Types\SentSMSState.cs" />
     <Compile Include="Types\Sms.cs" />
     <Compile Include="Types\Country.cs" />
     <Compile Include="Countries.cs" />
+    <Compile Include="Statistics.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
