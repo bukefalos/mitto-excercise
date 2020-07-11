@@ -23,11 +23,11 @@ namespace MittoSms.ServiceInterface
 
     public class SMSServices : Service
     {
-        public SendSMSResponse Get(SendSMS request)
+        public async Task<SendSMSResponse> Get(SendSMS request)
         {
             //TODO: select country which receiver belongs to (maybe move to ServiceLogic)
             var receiverCountry = FindCountry(
-                Db.Select<Country>(),
+                await Db.SelectAsync<Country>(),
                 request.To.ReplaceAll("+", ""));
                         
             var sms = request.ConvertTo<Sms>();
@@ -36,7 +36,7 @@ namespace MittoSms.ServiceInterface
             sms.Price = receiverCountry.PricePerSMS;
             sms.CountryId = receiverCountry.Id;
 
-            Db.Save(sms);
+            await Db.SaveAsync(sms);
             return new SendSMSResponse
             {
                 State = sms.State

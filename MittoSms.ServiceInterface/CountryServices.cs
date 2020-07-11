@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using MittoSms.ServiceModel;
 using MittoSms.ServiceModel.Types;
 using ServiceStack;
@@ -9,9 +10,9 @@ namespace MittoSms.ServiceInterface
 {
     public class CountryServices : Service
     {
-        public List<Country> Get(Countries request)
+        public async Task<List<Country>> Get(Countries request)
         {
-            return Db.Select<Country>();
+            return await Db.SelectAsync<Country>();
         }
     }
 }
