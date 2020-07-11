@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using MittoSms.ServiceModel;
 using MittoSms.ServiceModel.Types;
 using ServiceStack;
@@ -33,7 +34,7 @@ namespace MittoSms.ServiceInterface
 
 
             var sms = request.ConvertTo<Sms>();
-            sms.Created = DateTime.Now;
+            sms.Created = DateTime.Now.ToUniversalTime();
 
             Db.Save(sms);
             return new SendSMSResponse
@@ -44,8 +45,13 @@ namespace MittoSms.ServiceInterface
 
         public GetSentSMSResponse Get(GetSentSMS request)
         {
-            var totalSmsRecords = Db.Count<Sms>();
+            var from = Convert.ToDateTime(request.DateTimeFrom);
+            var to = Convert.ToDateTime(request.DateTimeTo);
+            Expression<Func<Sms, bool>> dateTimeCondition = sms => from <= sms.Created && sms.Created >= to;
+
+            var totalSmsRecords = Db.Count<Sms>(dateTimeCondition);
             var smsRecords = Db.Select(Db.From<Sms>()
+                .Where(dateTimeCondition)
                 .Skip(request.Skip)
                 .Limit(request.Take)
             );
