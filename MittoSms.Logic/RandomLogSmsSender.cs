@@ -7,7 +7,7 @@ namespace MittoSms.Logic
 {
     public class RandomLogSmsSender : ISmsSender
     {
-        public static ILog Log = LogManager.GetLogger(typeof(ISmsSender));
+        public static ILog Log = LogManager.GetLogger(typeof(RandomLogSmsSender));
         private readonly Random Random = new Random();
 
         public Task<SentSMSState> Send(string sender, string receiver, string text)
