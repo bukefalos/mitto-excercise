@@ -4,7 +4,7 @@ using ServiceStack;
 
 namespace MittoSms.ServiceModel
 {
-    [Route("statistics", "GET")]
+    [Route("/statistics", "GET")]
     public class Statistics: IReturn<List<StatisticsRecord>>
     {
         public DateTime DateFrom { get; set; }
@@ -17,6 +17,7 @@ namespace MittoSms.ServiceModel
         public DateTime Day { get; set; }
         public string Mcc { get; set; }
         public Decimal PricePerSms { get; set; }
+        public int Count { get; set; }
         public Decimal TotalPrice { get; set; }
     }
 }

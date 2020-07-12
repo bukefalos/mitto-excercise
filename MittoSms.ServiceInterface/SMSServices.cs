@@ -7,6 +7,7 @@ using MittoSms.ServiceModel.Types;
 using ServiceStack;
 using ServiceStack.FluentValidation;
 using ServiceStack.OrmLite;
+using ServiceStack.Text;
 
 namespace MittoSms.ServiceInterface
 {

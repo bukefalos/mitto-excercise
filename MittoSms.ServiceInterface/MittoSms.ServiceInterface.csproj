@@ -28,6 +28,7 @@
     <Compile Include="SMSServices.cs" />
     <Compile Include="CountryServices.cs" />
     <Compile Include="StatisticsServices.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
