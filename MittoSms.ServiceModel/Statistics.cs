@@ -15,9 +15,9 @@ namespace MittoSms.ServiceModel
     public class StatisticsRecord
     {
         public DateTime Day { get; set; }
-        public string Mcc { get; set; }
+        public String Mcc { get; set; }
         public Decimal PricePerSms { get; set; }
-        public int Count { get; set; }
+        public Int32 Count { get; set; }
         public Decimal TotalPrice { get; set; }
     }
 }

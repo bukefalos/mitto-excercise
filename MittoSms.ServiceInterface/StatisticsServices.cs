@@ -4,11 +4,21 @@ using System.Threading.Tasks;
 using MittoSms.ServiceModel;
 using MittoSms.ServiceModel.Types;
 using ServiceStack;
+using ServiceStack.FluentValidation;
 using ServiceStack.OrmLite;
 using ServiceStack.Text;
 
 namespace MittoSms.ServiceInterface
 {
+    public class StatisticsRequestValidator : AbstractValidator<Statistics>
+    {
+        public StatisticsRequestValidator()
+        {
+            RuleFor(x => x.DateFrom).NotEmpty().WithMessage("Parameter 'dateFrom' is mandatory.");
+            RuleFor(x => x.DateTo).NotEmpty().WithMessage("Paramter 'dateTo' is mandatory");
+        }
+    }
+
     public class StatisticsServices : Service
     {
         
