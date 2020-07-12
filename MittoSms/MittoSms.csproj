@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.9.0" />
     <PackageReference Include="ServiceStack.OrmLite.MySql" Version="5.9.0" />
+    <PackageReference Include="ServiceStack.Logging.NLog" Version="5.9.0" />
   </ItemGroup>
 
   <ItemGroup>

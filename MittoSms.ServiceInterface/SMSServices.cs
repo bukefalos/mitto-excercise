@@ -35,10 +35,12 @@ namespace MittoSms.ServiceInterface
     public class SMSServices : Service
     {
         readonly ICountryLookup CountryLookup;
+        readonly ISmsSender SmsSender;
 
-        public SMSServices(ICountryLookup CountryLookup)
+        public SMSServices(ICountryLookup CountryLookup, ISmsSender SmsSender)
         {
             this.CountryLookup = CountryLookup;
+            this.SmsSender = SmsSender;
         }
 
         public async Task<SendSMSResponse> Get(SendSMS request)
@@ -46,10 +48,12 @@ namespace MittoSms.ServiceInterface
             var receiverCountry = CountryLookup.ByPhoneNumber(
                 await Db.SelectAsync<Country>(),
                 request.To.ReplaceAll("+", ""));
-                        
+
+            var sentState = await SmsSender.Send(request.From, request.To, request.Text);
+
             var sms = request.ConvertTo<Sms>();
             sms.CreatedAt = DateTime.Now.ToUniversalTime();
-            sms.State = SentSMSState.Success;
+            sms.State = sentState;
             sms.Price = receiverCountry.PricePerSMS;
             sms.CountryId = receiverCountry.Id;
 

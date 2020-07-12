@@ -13,6 +13,8 @@ using ServiceStack.Validation;
 using ServiceStack.Text;
 using System;
 using MittoSms.Logic;
+using ServiceStack.Logging.NLogger;
+using ServiceStack.Logging;
 
 namespace MittoSms
 {
@@ -66,11 +68,14 @@ namespace MittoSms
             };
             JsConfig.DateHandler = DateHandler.ISO8601;
 
+            LogManager.LogFactory = new ConsoleLogFactory();
             Plugins.Add(new ValidationFeature());
+
             container.RegisterValidators(typeof(SMSServices).Assembly);
             container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory("server=localhost;database=mitto;uid=mitto;pwd=mitto;", MySqlDialect.Provider));
             container.Register<ICountryLookup>(c => new SimpleCountryLookup(4));
-            
+            container.Register<ISmsSender>(c => new RandomLogSmsSender());
+
             //TODO: init DB if tables do not exist
         }
     }
