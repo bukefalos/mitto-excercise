@@ -52,18 +52,17 @@ namespace MittoSms
             });
 
             // global DateTime JSON configuration
-
-            /*
-            JsConfig<DateTime>.SerializeFn = time => new DateTime(time.Ticks, DateTimeKind.Local)
-                .ToString("yyyy-MM-ddTHH:mm:ss");
-
-            JsConfig<DateTime?>.SerializeFn =
-                time => time != null
-                    ? new DateTime(time.Value.Ticks, DateTimeKind.Local)
-                        .ToString("yyyy-MM-ddTHH:mm:ss")
-                    : null;
-           */
-
+            JsConfig<DateTime>.SerializeFn = time =>
+            {
+                switch(JsConfig.DateHandler)
+                {
+                    case DateHandler.ISO8601:
+                        return new DateTime(time.Ticks, DateTimeKind.Utc).ToString("yyyy-MM-ddTHH:mm:ss");
+                    case DateHandler.ISO8601DateOnly:
+                        return new DateTime(time.Ticks, DateTimeKind.Utc).ToString("yyyy-MM-dd");
+                }
+                return time.ToString();
+            };
             JsConfig.DateHandler = DateHandler.ISO8601;
 
             Plugins.Add(new ValidationFeature());
