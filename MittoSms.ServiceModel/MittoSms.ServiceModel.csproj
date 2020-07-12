@@ -1,41 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <ProjectGuid>{1CFF46E6-A080-4006-86D2-EBA17A90FF5E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <RootNamespace>MittoSms.ServiceModel</RootNamespace>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="SMSes.cs" />
-    <Compile Include="Types\SentSMSState.cs" />
-    <Compile Include="Types\Sms.cs" />
-    <Compile Include="Types\Country.cs" />
-    <Compile Include="Countries.cs" />
-    <Compile Include="Statistics.cs" />
+    <PackageReference Include="ServiceStack.Interfaces" Version="5.9.0" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\packages\ServiceStack.Interfaces.5.9.0\lib\net45\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Types\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
