@@ -24,13 +24,14 @@ namespace MittoSms.ServiceModel
     {
         public String DateTimeFrom { get; set; }
         public String DateTimeTo { get; set; }
-        public int Skip { get; set; }
-        public int Take { get; set; }
+        public Int32? Skip { get; set; }
+        public Int32? Take { get; set; }
     }
 
     public class GetSentSMSResponse
     {
-        public long TotalCount { get; set; }
-        public List<Sms> Items { get; set; } 
+        public long? TotalCount { get; set; }
+        public List<Sms> Items { get; set; }
+        public ResponseStatus ResponseStatus { get; set; }
     }
 }

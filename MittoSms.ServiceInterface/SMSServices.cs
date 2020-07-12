@@ -16,9 +16,18 @@ namespace MittoSms.ServiceInterface
     {
         public SendSMSValidator()
         {
-            RuleFor(x => x.Text).NotEmpty().WithMessage("A Text is what's needed.");
-            RuleFor(x => x.From).NotEmpty().WithMessage("A From is what's needed.");
-            RuleFor(x => x.To).NotEmpty().WithMessage("A To is what's needed.");
+            RuleFor(x => x.Text).NotEmpty().WithMessage("Parameter 'Text' is mandatory.");
+            RuleFor(x => x.From).NotEmpty().WithMessage("Paramter 'From' is mandatory");
+            RuleFor(x => x.To).NotEmpty().WithMessage("Parameter 'To' is mandatory.");
+        }
+    }
+
+    public class GetSentSMSValidator : AbstractValidator<GetSentSMS>
+    {
+        public GetSentSMSValidator()
+        {
+            RuleFor(x => x.DateTimeFrom).NotEmpty().WithMessage("Parameter 'dateTimeFrom' is mandatory.");
+            RuleFor(x => x.DateTimeTo).NotEmpty().WithMessage("Paramter 'dateTimeTo' is mandatory");
         }
     }
 
@@ -60,7 +69,8 @@ namespace MittoSms.ServiceInterface
 
         public async Task<GetSentSMSResponse> Get(GetSentSMS request)
         {
-            //TODO: request validation
+            var take = request.Take ?? 10;
+            var skip = request.Skip ?? 0;
             var from = Convert.ToDateTime(request.DateTimeFrom);
             var to = Convert.ToDateTime(request.DateTimeTo);
             Expression<Func<Sms, bool>> dateTimeCondition = sms => from <= sms.CreatedAt && sms.CreatedAt >= to;
@@ -68,8 +78,8 @@ namespace MittoSms.ServiceInterface
             var totalSmsRecords = await Db.CountAsync<Sms>(dateTimeCondition);
             var smsRecords = await Db.SelectAsync(Db.From<Sms>()
                 .Where(dateTimeCondition)
-                .Skip(request.Skip)
-                .Limit(request.Take)
+                .Skip(skip)
+                .Limit(take)
             );
 
             return new GetSentSMSResponse()
