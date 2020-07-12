@@ -13,5 +13,8 @@
   <ItemGroup>
     <ProjectReference Include="../MittoSms.ServiceInterface/MittoSms.ServiceInterface.csproj" />
     <ProjectReference Include="../MittoSms.ServiceModel/MittoSms.ServiceModel.csproj" />
+    <ProjectReference Include="..\MittoSms.Logic\MittoSms.Logic.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>

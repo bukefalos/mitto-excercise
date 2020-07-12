@@ -11,5 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="../MittoSms.ServiceModel/MittoSms.ServiceModel.csproj" />
+    <ProjectReference Include="..\MittoSms.Logic\MittoSms.Logic.csproj" />
   </ItemGroup>
 </Project>

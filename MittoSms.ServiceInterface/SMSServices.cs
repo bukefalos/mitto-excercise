@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MittoSms.ServiceModel;
 using MittoSms.ServiceModel.Types;
+using MittoSms.Logic;
 using ServiceStack;
 using ServiceStack.FluentValidation;
 using ServiceStack.OrmLite;
@@ -33,10 +34,16 @@ namespace MittoSms.ServiceInterface
 
     public class SMSServices : Service
     {
+        readonly ICountryLookup CountryLookup;
+
+        public SMSServices(ICountryLookup CountryLookup)
+        {
+            this.CountryLookup = CountryLookup;
+        }
+
         public async Task<SendSMSResponse> Get(SendSMS request)
         {
-            //TODO: select country which receiver belongs to (maybe move to ServiceLogic)
-            var receiverCountry = FindCountry(
+            var receiverCountry = CountryLookup.ByPhoneNumber(
                 await Db.SelectAsync<Country>(),
                 request.To.ReplaceAll("+", ""));
                         
@@ -51,20 +58,6 @@ namespace MittoSms.ServiceInterface
             {
                 State = sms.State
             };
-        }
-
-        private Country FindCountry(List<Country> countries, String receiver)
-        {
-            for (int callingCodeLength = 4; callingCodeLength > 0; callingCodeLength--)
-            {
-                var potentialCallingCode = receiver.Substring(0, callingCodeLength);
-                var foundCountry = countries.Find(country => country.Cc.Equals(potentialCallingCode));
-                if (foundCountry != null)
-                {
-                    return foundCountry;
-                }
-            }
-            throw new ArgumentException("Unsupported receiver calling code");
         }
 
         public async Task<GetSentSMSResponse> Get(GetSentSMS request)

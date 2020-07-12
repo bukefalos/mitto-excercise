@@ -12,6 +12,7 @@ using ServiceStack.OrmLite;
 using ServiceStack.Validation;
 using ServiceStack.Text;
 using System;
+using MittoSms.Logic;
 
 namespace MittoSms
 {
@@ -68,6 +69,8 @@ namespace MittoSms
             Plugins.Add(new ValidationFeature());
             container.RegisterValidators(typeof(SMSServices).Assembly);
             container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory("server=localhost;database=mitto;uid=mitto;pwd=mitto;", MySqlDialect.Provider));
+            container.Register<ICountryLookup>(c => new SimpleCountryLookup(4));
+            
             //TODO: init DB if tables do not exist
         }
     }
