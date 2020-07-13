@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  mittodb:
+    container_name: mittodb
+    command: --lower_case_table_names=1
+    image: 'mitto/mysql'
+    build:
+      context: MittoSms/Db
+    networks:
+      - mitto_net
+  mittosms:
+    container_name: mittosms
+    depends_on:
+      - mittodb
+    restart: on-failure
+    image: 'mitto/sms'
+    build:
+      context: .
+      dockerfile: MittoSms/Dockerfile
+    networks:
+      - mitto_net
+    ports:
+      - '8080:80'
+    environment:
+      - Mitto__Db__Connection=server=mittodb;database=mitto;uid=mitto;pwd=mitto
+
+networks:
+  mitto_net:
+    driver: bridge

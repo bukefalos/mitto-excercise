@@ -71,8 +71,9 @@ namespace MittoSms
             LogManager.LogFactory = new ConsoleLogFactory();
             Plugins.Add(new ValidationFeature());
 
+            var dbConnectionString = Configuration.GetValue<String>("Mitto:Db:Connection") ?? "server=localhost;database=mitto;uid=mitto;pwd=mitto;";
             container.RegisterValidators(typeof(SMSServices).Assembly);
-            container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory("server=localhost;database=mitto;uid=mitto;pwd=mitto;", MySqlDialect.Provider));
+            container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory(dbConnectionString , MySqlDialect.Provider));
             container.Register<ICountryLookup>(c => new SimpleCountryLookup(4));
             container.Register<ISmsSender>(c => new RandomLogSmsSender());
 
