@@ -15,6 +15,7 @@ using System;
 using MittoSms.Logic;
 using ServiceStack.Logging.NLogger;
 using ServiceStack.Logging;
+using MittoSms.ServiceModel.Types;
 
 namespace MittoSms
 {
@@ -53,11 +54,21 @@ namespace MittoSms
                 DefaultRedirectPath = "/metadata",
                 DebugMode = AppSettings.Get(nameof(HostConfig.DebugMode), false)
             });
+            LogManager.LogFactory = new ConsoleLogFactory();
 
-            // global DateTime JSON configuration
+            InitJsConfig();
+            InitDbConnection(container);
+            InitValidations(container);
+
+            container.Register<ICountryLookup>(c => new SimpleCountryLookup(4));
+            container.Register<ISmsSender>(c => new RandomLogSmsSender());
+        }
+
+        private static void InitJsConfig()
+        {
             JsConfig<DateTime>.SerializeFn = time =>
             {
-                switch(JsConfig.DateHandler)
+                switch (JsConfig.DateHandler)
                 {
                     case DateHandler.ISO8601:
                         return new DateTime(time.Ticks, DateTimeKind.Utc).ToString("yyyy-MM-ddTHH:mm:ss");
@@ -67,17 +78,34 @@ namespace MittoSms
                 return time.ToString();
             };
             JsConfig.DateHandler = DateHandler.ISO8601;
+        }
 
-            LogManager.LogFactory = new ConsoleLogFactory();
-            Plugins.Add(new ValidationFeature());
-
+        private void InitDbConnection(Container container)
+        {
             var dbConnectionString = Configuration.GetValue<String>("Mitto:Db:Connection") ?? "server=localhost;database=mitto;uid=mitto;pwd=mitto;";
-            container.RegisterValidators(typeof(SMSServices).Assembly);
-            container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory(dbConnectionString , MySqlDialect.Provider));
-            container.Register<ICountryLookup>(c => new SimpleCountryLookup(4));
-            container.Register<ISmsSender>(c => new RandomLogSmsSender());
+            var dbFactory = new OrmLiteConnectionFactory(dbConnectionString, MySqlDialect.Provider);
+            container.Register<IDbConnectionFactory>(c => dbFactory);
+            CheckAndCreateDb(dbFactory);
+        }
 
-            //TODO: init DB if tables do not exist
+        private static void CheckAndCreateDb(OrmLiteConnectionFactory dbFactory)
+        {
+            using (var db = dbFactory.Open())
+            {
+                if (db.CreateTableIfNotExists<Country>())
+                {
+                    db.Insert(new Country { Name = "Germany", Mcc = "262", Cc = "49", PricePerSMS = 0.55m });
+                    db.Insert(new Country { Name = "Austria", Mcc = "232", Cc = "43", PricePerSMS = 0.53m });
+                    db.Insert(new Country { Name = "Germany", Mcc = "260", Cc = "48", PricePerSMS = 0.32m });
+                }
+                db.CreateTableIfNotExists<Sms>();
+            }
+        }
+
+        private void InitValidations(Container container)
+        {
+            Plugins.Add(new ValidationFeature());
+            container.RegisterValidators(typeof(SMSServices).Assembly);
         }
     }
 }
