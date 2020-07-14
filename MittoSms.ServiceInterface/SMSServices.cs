@@ -68,9 +68,9 @@ namespace MittoSms.ServiceInterface
         {
             var take = request.Take ?? 10;
             var skip = request.Skip ?? 0;
-            var from = Convert.ToDateTime(request.DateTimeFrom);
-            var to = Convert.ToDateTime(request.DateTimeTo);
-            Expression<Func<Sms, bool>> dateTimeCondition = sms => from <= sms.CreatedAt && sms.CreatedAt >= to;
+            var from = DateTime.SpecifyKind(Convert.ToDateTime(request.DateTimeFrom), DateTimeKind.Utc);
+            var to = DateTime.SpecifyKind(Convert.ToDateTime(request.DateTimeTo), DateTimeKind.Utc);
+            Expression<Func<Sms, bool>> dateTimeCondition = sms => from <= sms.CreatedAt && sms.CreatedAt <= to;
 
             var totalSmsRecords = await Db.CountAsync<Sms>(dateTimeCondition);
             var smsRecords = await Db.SelectAsync(Db.From<Sms>()
