@@ -7,8 +7,8 @@ namespace MittoSms.ServiceModel
     [Route("/statistics", "GET")]
     public class Statistics: IReturn<List<StatisticsRecord>>
     {
-        public DateTime DateFrom { get; set; }
-        public DateTime DateTo { get; set; }
+        public string DateFrom { get; set; }
+        public string DateTo { get; set; }
         public List<String> MccList { get; set; }
     }
 

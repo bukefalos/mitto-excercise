@@ -70,7 +70,7 @@ namespace MittoSms.Tests.Unit
                 db.Insert(new Sms
                 {
                     CountryId = germany.Id,
-                    CreatedAt = DateTime.SpecifyKind(Convert.ToDateTime("2020-07-13T15:00:00Z"), DateTimeKind.Utc),
+                    CreatedAt = DateTime.SpecifyKind(Convert.ToDateTime("2020-07-13T15:00:00"), DateTimeKind.Utc),
                     Price = germany.PricePerSMS,
                     State = SentSMSState.Success,
                     Text = "Hello",
@@ -82,7 +82,7 @@ namespace MittoSms.Tests.Unit
                 db.Insert(new Sms
                 {
                     CountryId = poland.Id,
-                    CreatedAt = DateTime.SpecifyKind(Convert.ToDateTime("2020-07-13T22:00:00Z"), DateTimeKind.Utc),
+                    CreatedAt = DateTime.SpecifyKind(Convert.ToDateTime("2020-07-13T22:00:00"), DateTimeKind.Utc),
                     Price = poland.PricePerSMS,
                     State = SentSMSState.Success,
                     Text = "Hello",
@@ -90,7 +90,7 @@ namespace MittoSms.Tests.Unit
                     To = "+{0}123456789".Fmt(poland.Cc)
                 });
 
-                var response = service.Get(new GetSentSMS { DateTimeFrom = "2020-07-13T10:00:00Z", DateTimeTo = "2020-07-13T20:00:00Z" }).GetResult();
+                var response = service.Get(new GetSentSMS { DateTimeFrom = "2020-07-13T10:00:00", DateTimeTo = "2020-07-13T20:00:00" }).GetResult();
                 Assert.That(response.TotalCount, Is.EqualTo(1));
                 Assert.That(response.Items[0].CountryId, Is.EqualTo(germany.Id));
             }

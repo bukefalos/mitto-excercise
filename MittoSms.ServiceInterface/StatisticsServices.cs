@@ -24,14 +24,14 @@ namespace MittoSms.ServiceInterface
         
         public async Task<HttpResult> Get(Statistics request)
         {
-            var from = Convert.ToDateTime(request.DateFrom);
-            var to = Convert.ToDateTime(request.DateTo).EndOfDay();
+            var from = DateTime.SpecifyKind(Convert.ToDateTime(request.DateFrom), DateTimeKind.Utc);
+            var to = DateTime.SpecifyKind(Convert.ToDateTime(request.DateTo), DateTimeKind.Utc).EndOfDay();
             var query = Db.From<Sms>()
                     .Join<Sms, Country>()
                     .Select<Sms, Country>((sms, country) => new
                     {
                         Mcc = country.Mcc,
-                        Day = Sql.Cast(sms.CreatedAt, "DATE"),
+                        Day = Sql.Custom("DATE(created_at)"),
                         Count = Sql.Count("*"),
                         PricePerSms = Sql.Max(country.PricePerSMS),
                         TotalPrice = Sql.Sum(sms.Price)
