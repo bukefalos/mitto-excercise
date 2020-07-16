@@ -52,5 +52,5 @@ Use API by provided excercise assignment
 - I assume usual usecase of Sending SMS service is often with multiple recipients. I would extend SendSMS service to accept more receivers in one request. I would put list of receivers into request body
 - Matching country calling code - currently I have implemented very naive approach which is based on matching calling codes of each country to first N numbers of receiver mobile number in a loop starting with longest N down to 1. There is also no other number validation by country. 
 - When grouping Statistics records I had to cast DATETIME to DATE with DATE function. This can be slow for big list of SMS records. We can possibly save one more culumn with DATE string or DATETIME to group Statstics records faster without using DATE function.
-- There are very simple validation checking just a presence of parameters
+- There is very simple validation checking which currently checks only presence of parameters
 - I have no integration tests, tests that should run whole application, try API out and assert if responses are in correct format. 
